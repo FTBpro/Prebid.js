@@ -20,6 +20,8 @@ import {
   _each,
   isPlainObject
 } from '../src/utils.js';
+import * as events from '../src/events.js';
+import { EVENTS } from '../src/constants.js';
 import { getAllOrtbKeywords } from '../libraries/keywords/keywords.js';
 import { getUserSyncParams } from '../libraries/userSyncUtils/userSyncUtils.js';
 import { outstreamRenderer } from '../libraries/magniteUtils/outstream.js';
@@ -669,6 +671,13 @@ export const spec = {
     let lastImpId;
     let multibid = 0;
     const { bidRequest } = request;
+
+    if ((request.url || "").includes("fastlane")) {
+      const errorCode = responseObj.error_code || deepAccess(responseObj, "ads.0.error_code");
+      if (errorCode) {
+        events.emit(EVENTS.RUBICON_BID_ERROR, { errorCode });
+      }
+    }
 
     // video ads array is wrapped in an object
     if (typeof bidRequest === 'object' && !Array.isArray(bidRequest) && bidType(bidRequest).includes(VIDEO) && typeof ads === 'object') {
