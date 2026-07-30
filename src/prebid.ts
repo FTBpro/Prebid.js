@@ -491,6 +491,7 @@ declare module './prebidGlobal' {
     processQueue: typeof processQueue;
     triggerBilling: typeof triggerBilling;
     refreshPageViewId: typeof refreshPageViewId;
+    addBids: typeof addBids;
   }
 }
 
@@ -1323,5 +1324,26 @@ function refreshPageViewId() {
   }
 }
 addApiMethod('refreshPageViewId', refreshPageViewId);
+
+/**
+ * Add externally obtained bids to a dedicated auction so they are available
+ * to targeting and rendering, identified by the given auction ID.
+ */
+function addBids(bids: Bid[], opts: { auctionId: Identifier }) {
+  const auction = auctionManager.createAuction({
+    adUnits: [],
+    adUnitCodes: [],
+    callback: () => {},
+    cbTimeout: 1,
+    labels: [],
+    auctionId: opts.auctionId,
+    ortb2Fragments: {},
+    metrics: newMetrics(),
+  });
+  for (const bid of bids) {
+    auction.addBidReceived(bid);
+  }
+}
+addApiMethod('addBids', addBids);
 
 export default pbjsInstance;
