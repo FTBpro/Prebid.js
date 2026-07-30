@@ -18,7 +18,7 @@
     "./customize/*": "./customize/*.mjs"
   },
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp build --modules=prebid_modules.json",
     "serve": "gulp serve",
     "test": "gulp test",
     "lint": "gulp lint"
