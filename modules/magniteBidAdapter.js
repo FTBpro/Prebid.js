@@ -1,4 +1,6 @@
 import { config } from '../src/config.js';
+import * as events from '../src/events.js';
+import { EVENTS } from '../src/constants.js';
 import { registerBidder } from '../src/adapters/bidderFactory.js';
 import { BANNER, NATIVE, VIDEO } from '../src/mediaTypes.js';
 import { ortbConverter } from '../libraries/ortbConverter/converter.js';
@@ -326,6 +328,7 @@ function interpretResponse(resp, req) {
   if (!resp.body) {
     resp.body = { nbr: 0 };
   }
+  events.emit(EVENTS.MAGNITE_BID_ERROR, { nbr: resp.body.nbr });
   return converter.fromORTB({ request: req.data, response: resp.body })?.bids;
 }
 
