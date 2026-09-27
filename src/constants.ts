@@ -47,6 +47,7 @@ export const EVENTS = {
   BROWSI_DATA: 'browsiData',
   BROWSER_INTERVENTION: 'browserIntervention',
   RUBICON_BID_ERROR: 'rubiconBidError',
+  MAGNITE_BID_ERROR: 'magniteBidError',
 } as const;
 
 export const AD_RENDER_FAILED_REASON = {
